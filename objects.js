@@ -103,7 +103,7 @@ class Background {
         textSize(60);
         fill(150);
         text(player.playerPoints, 100, 100);
-        text(timerVal, width - 100,100);
+        //text(timerVal, width - 100,100);
         rectMode(CORNER);
         fill(this.color);
         rect(this.xpos, this.ypos, this.width, this.hight);
@@ -148,6 +148,8 @@ class StartScreen {
             textSize(20);
             text("START!", width / 2, height / 2);
             textStyle(NORMAL);
+            fill(150);
+            text("Use arrow keys, jump on enemies", width / 2, height / 2 + 200);
         }
     }
        

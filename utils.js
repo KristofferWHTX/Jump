@@ -5,8 +5,6 @@ function spawner (){
     if (gameEnd || gameStart == false) { //reset spawner when game ends
         this.startspwn = false; 
         this.spawnRate = spawnRate;
-        console.log(spawnRate);
-        console.log(this.spawnRate);
         for (var i = 0; i <enemiesList.length; i++) {
             enemiesList[i].ypos = height *2; //place current enemies outside screen
         }
