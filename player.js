@@ -1,0 +1,192 @@
+/// <reference path="./p5.global-mode.d.ts" />
+
+class Player {
+    constructor(layer, state) {
+        this.color = color(200,50,120);
+        this.xpos = width / 2; //width & hight = canvas w h
+        this.diam = height / 8;
+        this.ypos = height - this.diam ;
+        //move vars
+        this.xvel = 0;
+        this.yvel = 1.5;
+        this.jumpState = 0;
+
+        this.playerVisible = true;
+        this.state = state;
+        layer.objects.push(this);
+        this.playerPoints = 0;
+    }
+
+
+    Draw(){
+        noStroke();
+        fill(this.color);
+        circle(this.xpos, this.ypos, this.diam); 
+        
+    }
+    update(){
+        this[this.state]();
+        this.checkCollision();
+
+        if (gameStart == 0) { 
+            this.playerVisible = false;         //If on startscreen player not visible and state is idle
+            this.state = "idle";
+          }
+          else if (gameStart == 1 && this.state != "Dead") {
+            this.playerVisible = true;
+            this.state = "move";
+          }
+    }
+
+    move(){
+    
+        if (keyIsDown(RIGHT_ARROW)) {   //acceleration left/right
+            this.xvel += 2;
+        }
+        if (keyIsDown(LEFT_ARROW)) {
+            this.xvel += -2;
+        }
+
+        if (keyIsDown(UP_ARROW)) {
+            this.Jump();
+        }
+
+
+        if (this.jumpState == 1) {                 //downward acceleration when in air
+            this.yvel += (this.diam * 0.36) / 20;
+        }
+
+
+        this.xpos += this.xvel;
+        this.ypos += this.yvel;
+
+        if (this.xvel >= width / 150) {      //x speed max 12
+            this.xvel = width / 150;
+        }
+        if (this.xvel <= -width / 150) {
+            this.xvel = -width / 150;
+        }
+
+        if (this.ypos >  height * 0.75 -this.diam / 2 +3) {     //y vel stops on ground
+            this.yvel = 0;
+            this.jumpState = 0;
+            this.ypos = height * 0.75 - this.diam / 2 +3;
+            this.streak = 0;  
+        }
+        
+        if (this.xpos >= width - (this.diam / 2)) {     //x position can not exceed screen limits
+            this.xpos = width -(this.diam / 2);
+        }
+        if (this.xpos <= 0 + (this.diam / 2)) {
+            this.xpos = 0 + (this.diam / 2);
+        }
+
+
+        this.xvel = this.xvel * 0.8;        //x velocity decelleration
+
+
+    }
+
+    idle(){
+        //reset position and speed
+        this.xpos = width / 2;
+        this.ypos = height - this.diam ;
+        this.xvel = 0;
+
+        this.contEnd = true; //reset contEnd to true so game can end again
+    }
+
+    Jump(collide) {
+
+        if (this.jumpState == 1 && collide) {
+            this.yvel = 0;
+            this.yvel += -(this.diam * 0.27);
+        }
+
+        if (this.jumpState == 0) {
+            this.yvel += -(this.diam * 0.27);
+            this.jumpState = 1;
+        }
+
+    }
+
+
+
+    checkCollision (){
+        //for every enemy
+        for (var i = 0; i <enemiesList.length; i++) {
+            if (enemiesList[i].type == 1 || enemiesList[i].type == 2 || enemiesList[i].type == 4) {
+
+                this.collisionDist = sqrt(sq(this.xpos - enemiesList[i].xpos) + sq(this.ypos - enemiesList[i].ypos))
+                //check collision
+    
+                if (this.collisionDist <= this.diam / 2 + enemiesList[i].diam / 2) {
+                    //this.yvel = 0;
+    
+                    //check if bottom of player is over of enemy center and function Jump
+                    if (this.ypos + (this.diam / 2) <= enemiesList[i].ypos) {
+                        console.log("collision : jump")
+                        enemiesList[i].dead();
+                        this.Jump(true);
+                        this.streak += 1; 
+                        this.playerPoints += enemiesList[i].pointValue * this.streak;
+                        pointText(this.streak, enemiesList[i].pointValue);
+                    }
+                    //if player is not on top return true
+                    else {
+                        console.log("collision : dead")
+                        this.state = "Dead";
+                    }
+                }
+            }
+
+            else if (enemiesList[i].type == 3)  {
+                //dist from center of player to center of enemy
+                this.collisionDist = sqrt(sq(this.xpos - enemiesList[i].xpos) + sq(this.ypos - enemiesList[i].ypos)) 
+
+                this.eSizeW = enemiesList[i].rectSize[0]; //grab width and height of enemy rect
+                this.eSizeH = enemiesList[i].rectSize[1];
+
+                if (this.collisionDist <= this.diam / 2 + this.eSizeW / 2) { //if within range
+                    //if player is under enemy, no collision and continue
+                    if (this.ypos - this.diam / 2 >= enemiesList[i].ypos + this.eSizeH / 2) {
+                        continue;
+                    }
+                    //if player is over enemy rect
+                    if (this.ypos + this.diam <= enemiesList[i].ypos) {
+                        //if player bottom is colliding with enemy top
+                        if(this.ypos + this.diam >= enemiesList[i].ypos - this.eSizeH / 2) {
+                            console.log("collision : jump")
+                            enemiesList[i].dead();
+                            this.Jump(true);
+                            this.streak += 1; 
+                            this.playerPoints += enemiesList[i].pointValue * this.streak;
+                            pointText(this.streak, enemiesList[i].pointValue); 
+                        }
+                        else {
+                            continue;
+                        }
+                    }
+                    
+                    else {
+                        console.log("collision : dead")
+                        this.state = "Dead";
+                    }
+                }
+            }
+            
+        }
+    }
+
+    Dead() {
+         //contEnd makes sure statement only runs once
+        if (this.contEnd) {        
+            setTimeout(() => {gameEnd = true;}, 500);
+            this.contEnd = false;
+        }
+
+        this.ypos += 10; //player falls out of screen
+
+    }
+
+}
