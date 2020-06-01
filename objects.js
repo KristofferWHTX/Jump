@@ -13,12 +13,12 @@ class Enemy {
             this.color = ("rgba(200, 101, 20, 0.8)");
             this.diam = round((height / 8) * 1.1); //player diam * 1.1
             this.ypos = height * 0.75 - this.diam / 2 +3;
-            this.xvel = random(width / 250, width / 200); //random difference in movement speed
+            this.xvel = random(width / 300, width / 250); //random difference in movement speed
             this.pointValue = 100;
         }
 
         if (this.type == 2) {
-            this.color = ("rgba(32, 102, 79, 0.8)");
+            this.color = ("rgba(32, 152, 79, 0.8)");
             this.diam = round((height / 8) * 1.2);      //diameter based on screen height // player diam *1.2
             this.ypos = height * 0.75 - this.diam / 2 +3;
             this.xvel = random(width / 250, width / 160); //speed random based on screen width
@@ -28,9 +28,17 @@ class Enemy {
         if (this.type == 3) {
             this.color = ("rgba(140,70,60,0.8)")
             this.rectSize = [height / 5, height / 15];
-            this.ypos = height * 0.50;
+            this.ypos = height * 0.52;
             this.xvel = random(width / 300, width / 250);
             this.pointValue = 200;
+        }
+
+        if (this.type == 4){
+            this.color = ("rgba(240,10,10,0.8)");
+            this.diam = round(height / 8 *1.1);
+            this.ypos = height * 0.42 - this.diam / 2;
+            this.xvel = random (width / 300, width / 250);
+            this.pointValue = 250;
         }
 
 
@@ -172,11 +180,12 @@ class EndScreen {
         if (gameEnd) {
             noStroke();
             textAlign(CENTER);
-            textSize(150);
+            textSize(width / 10);
             fill(150);
             text("GAME OVER!", width / 2, height / 2 -200);
+            textSize(width / 15);
             text("Your Score: " + player.playerPoints, width / 2, height / 2);
-            textSize(30);
+            textSize(width / 50);
             text("Press any key to continue", width / 2, height / 2 + 200);
            
         }

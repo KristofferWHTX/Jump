@@ -53,7 +53,7 @@ class Player {
 
 
         if (this.jumpState == 1) {                 //downward acceleration when in air
-            this.yvel += (this.diam * 0.36) / 20;
+            this.yvel += (this.diam * 0.007);
         }
 
 
@@ -100,11 +100,11 @@ class Player {
 
         if (this.jumpState == 1 && collide) {
             this.yvel = 0;
-            this.yvel += -(this.diam * 0.27);
+            this.yvel += -(this.diam * 0.15);
         }
 
         if (this.jumpState == 0) {
-            this.yvel += -(this.diam * 0.27);
+            this.yvel += -(this.diam * 0.15);
             this.jumpState = 1;
         }
 
@@ -153,9 +153,9 @@ class Player {
                         continue;
                     }
                     //if player is over enemy rect
-                    if (this.ypos + this.diam <= enemiesList[i].ypos) {
+                    if (this.ypos + this.diam / 2 <= enemiesList[i].ypos) {
                         //if player bottom is colliding with enemy top
-                        if(this.ypos + this.diam >= enemiesList[i].ypos - this.eSizeH / 2) {
+                        if(this.ypos + this.diam / 2 >= enemiesList[i].ypos - this.eSizeH / 2) {
                             console.log("collision : jump")
                             enemiesList[i].dead();
                             this.Jump(true);

@@ -5,22 +5,36 @@ function spawner (){
     if (gameEnd || gameStart == false) { //reset spawner when game ends
         this.startspwn = false; 
         this.spawnRate = spawnRate;
+        console.log(spawnRate);
+        console.log(this.spawnRate);
+        for (var i = 0; i <enemiesList.length; i++) {
+            enemiesList[i].ypos = height *2; //place current enemies outside screen
+        }
     }
 
     //-t * log(r)  poisson distribution/process  r = rand 0-1    t = avg time between arrivals, 1 = 0.1 secs
    this.r = random();
 
-   this.spawnRand = random();
-   if (this.spawnRand >= 0.75) {// temp
-       this.enemyType = 3;
+   this.spawnRand = random(0, 31);
+   if (this.spawnRand >= this.spawnRate) {
+       if (this.spawnRand >= this.spawnRate + 13) {
+           this.enemyType = 3;
+            if (this.spawnRand >= this.spawnRate + 22) {
+                this.enemyType = 4;
+            }
+
+       }
+       else {
+           this.enemyType = 2;
+       }
    }
    else {
        this.enemyType = 1;
    }
 
  
-    if (this.spawnRate <= 7) { // makes sure spawnrate doesnt get too low
-        this.spawnRate = 7;
+    if (this.spawnRate <= 5) { // makes sure spawnrate doesnt get too low
+        this.spawnRate = 6;
     }
 
 
@@ -43,7 +57,28 @@ function spawner (){
             enemiesList.push(new Enemy(this.enemyType)); //add the new enemy to array
             this.lastSpwnTime = timerVal;             // set spawntime to current timer value
             this.spwnTime =  round(this.spawnRate * -1 * log(this.r)) +1;    //calculate time until next spawn
-            this.spawnRate = this.spawnRate * 0.98; // spawns faster after some spawns
+            this.spawnRate = this.spawnRate * 0.97; // spawns faster after some spawns
+
+            if (this.spwnTime >= 50)  {  //Spawn time max 5 seconds
+                this.spwnTime = 50;
+            }
+            if (this.spawnRate >= 25) {
+                if (this.spwnTime <= 10) { //if spawntime is less one second before spawnrate is below 25, it will be 2 seconds
+                    this.spwnTime = 20;
+            }
+
+            }
+            if (this.spawnRate <= 25) {
+                if (this.spwnTime >= 30)  { 
+                    this.spwnTime = 30;
+                }
+                if (this.spawnRate <= 17){
+                    if (this.spwnTime >= 20) {
+                        this.spwnTime = 20;
+                    }
+                }
+
+            }
 
 
 
@@ -54,12 +89,7 @@ function spawner (){
 
         }
     }
-    if (this.spwnTime >= 50)  {  //Spawn time max 5 seconds
-        this.spwnTime = 50;
-    }
-    if (this.spwnTime <= 5) { //if spawntime is less that half a second, it will be 1 second
-        this.spwnTime = 10;
-    }
+
 
 
     //check if enemy is dead, (outside screen) and splice from array.
@@ -75,6 +105,8 @@ function spawner (){
 
 
 }
+
+
 
 
 function pointText(streak, value) { //create new point text.

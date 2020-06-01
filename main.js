@@ -1,6 +1,6 @@
 /// <reference path="./p5.global-mode.d.ts" />
 //global vars
-var spawnRate = 30;
+const spawnRate = 30;
 
 var backLayer;
 var objLayer;
