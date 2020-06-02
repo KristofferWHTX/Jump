@@ -36,17 +36,6 @@ function spawner (){
     }
 
 
-   /* if (timerVal == 20 && this.startspwn != true) { //start spawning after 2 seconds
-        this.startspwn = true;
-        enemiesList.push(new Enemy(1));
-        this.lastSpwnTime = timerVal;
-        this.spwnTime =  round(this.spawnRate * -1 * log(this.r)) +1;
-
-        console.log("lastspw  " + this.lastSpwnTime );
-        console.log("spwnTime  "+ this.spwnTime);
-        console.log(enemiesList);
-    }*/
-
     if ((this.startspwn == true && this.runTime != timerVal) || (timerVal == 20 && this.startspwn != true)) {
         this.runTime = timerVal;
         this.startspwn = true;
@@ -77,8 +66,6 @@ function spawner (){
                 }
 
             }
-
-
 
             console.log("spawnRate   " + this.spawnRate);
             console.log("lastspw:  " + this.lastSpwnTime );

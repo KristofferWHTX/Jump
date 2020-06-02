@@ -1,27 +1,27 @@
 /// <reference path="./p5.global-mode.d.ts" />
 //global vars
 const spawnRate = 30;
-
+//layer variables
 var backLayer;
 var objLayer;
 var screenLayer;
-
+//screen variables
 var startScreen;
 var endScreen;
-
-//var player;
+//enemy array and player variable
 var enemiesList = [];
+var player;
 
+//gamestate variables
 var gameStart = false;
 var gameEnd = false;
 
-
+//timer variable
 var timerVal = 0;
-
+//timer runs when game is started
 function timeIt() {
   if (gameStart && gameEnd != true) {
     timerVal++;
-  //console.log("timerval:  " + timerVal);
   }
 }
 
@@ -30,6 +30,7 @@ function timeIt() {
 function setup() {
   createCanvas(windowWidth, windowHeight );
   setInterval(timeIt, 100);
+
 
   objLayer = new ObjectLayer(); //create object layer
   backLayer = new BackgroundLayer(); //create background layer
@@ -49,22 +50,9 @@ function setup() {
 
 function draw() {
   clear();
-  physicsUpdate();
   update();
-  backgroundUpdate();
   render();
   
-}
-
-function backgroundUpdate(){
-  background(230);
- // backLayer.backgroundUpdate();
-
-}
-
-function physicsUpdate(){
-  
-
 }
 
 function update(){
@@ -75,6 +63,7 @@ function update(){
 }
 
 function render(){
+  background(230);
   backLayer.Draw();
   objLayer.Draw();
   screenLayer.Draw();

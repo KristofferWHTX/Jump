@@ -4,9 +4,9 @@ function ObjectLayer() {
     this.objects = [];
 
     this.update = function(){
-            for (var i = 0; i < this.objects.length; i++) {
-                this.objects[i].update();
-            }
+        for (var i = 0; i < this.objects.length; i++) {
+            this.objects[i].update();
+        }
     }
 
     this.Draw = function(){
@@ -21,12 +21,6 @@ function ObjectLayer() {
 function BackgroundLayer() {
     this.objects = [];
 
-   /* this.backgroundUpdate = function() {
-        for (var i = 0; i < this.objects.length; i++) {
-            this.objects[i].backgroundUpdate();
-        }
-    }*/
-
     this.Draw = function() {
 
         if (gameStart && gameEnd != true) {
@@ -34,10 +28,10 @@ function BackgroundLayer() {
                 this.objects[i].Draw();
             }
         }
-    
     }
 
 }
+
 
 function ScreenLayer() {
     this.objects = [];

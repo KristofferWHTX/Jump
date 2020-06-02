@@ -11,10 +11,10 @@ class Player {
         this.yvel = 1.5;
         this.jumpState = 0;
 
-        this.playerVisible = true;
+        this.playerPoints = 0;
+
         this.state = state;
         layer.objects.push(this);
-        this.playerPoints = 0;
     }
 
 
@@ -29,11 +29,9 @@ class Player {
         this.checkCollision();
 
         if (gameStart == 0) { 
-            this.playerVisible = false;         //If on startscreen player not visible and state is idle
             this.state = "idle";
           }
           else if (gameStart == 1 && this.state != "Dead") {
-            this.playerVisible = true;
             this.state = "move";
           }
     }
@@ -116,6 +114,7 @@ class Player {
         //for every enemy
         for (var i = 0; i <enemiesList.length; i++) {
             if (enemiesList[i].type == 1 || enemiesList[i].type == 2 || enemiesList[i].type == 4) {
+                //collision for circular enemies
 
                 this.collisionDist = sqrt(sq(this.xpos - enemiesList[i].xpos) + sq(this.ypos - enemiesList[i].ypos))
                 //check collision
@@ -125,7 +124,6 @@ class Player {
     
                     //check if bottom of player is over of enemy center and function Jump
                     if (this.ypos + (this.diam / 2) <= enemiesList[i].ypos) {
-                        console.log("collision : jump")
                         enemiesList[i].dead();
                         this.Jump(true);
                         this.streak += 1; 
@@ -134,12 +132,11 @@ class Player {
                     }
                     //if player is not on top return true
                     else {
-                        console.log("collision : dead")
                         this.state = "Dead";
                     }
                 }
             }
-
+                //collision for enemy type 3 rectangle
             else if (enemiesList[i].type == 3)  {
                 //dist from center of player to center of enemy
                 this.collisionDist = sqrt(sq(this.xpos - enemiesList[i].xpos) + sq(this.ypos - enemiesList[i].ypos)) 
@@ -156,7 +153,6 @@ class Player {
                     if (this.ypos + this.diam / 2 <= enemiesList[i].ypos) {
                         //if player bottom is colliding with enemy top
                         if(this.ypos + this.diam / 2 >= enemiesList[i].ypos - this.eSizeH / 2) {
-                            console.log("collision : jump")
                             enemiesList[i].dead();
                             this.Jump(true);
                             this.streak += 1; 
@@ -169,7 +165,6 @@ class Player {
                     }
                     
                     else {
-                        console.log("collision : dead")
                         this.state = "Dead";
                     }
                 }
@@ -186,7 +181,6 @@ class Player {
         }
 
         this.ypos += 10; //player falls out of screen
-
     }
 
 }
