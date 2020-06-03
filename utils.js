@@ -20,7 +20,6 @@ function spawner (){
             if (this.spawnRand >= this.spawnRate + 22) {
                 this.enemyType = 4;
             }
-
        }
        else {
            this.enemyType = 2;

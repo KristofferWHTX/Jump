@@ -4,7 +4,7 @@ class Player {
     constructor(layer, state) {
         this.color = color(200,50,120);
         this.xpos = width / 2; //width & hight = canvas w h
-        this.diam = height / 8;
+        this.diam = height / 9;
         this.ypos = height - this.diam ;
         //move vars
         this.xvel = 0;
@@ -18,12 +18,6 @@ class Player {
     }
 
 
-    Draw(){
-        noStroke();
-        fill(this.color);
-        circle(this.xpos, this.ypos, this.diam); 
-        
-    }
     update(){
         this[this.state]();
         this.checkCollision();
@@ -34,6 +28,13 @@ class Player {
           else if (gameStart == 1 && this.state != "Dead") {
             this.state = "move";
           }
+    }
+    
+    Draw(){
+        noStroke();
+        fill(this.color);
+        circle(this.xpos, this.ypos, this.diam); 
+        
     }
 
     move(){
@@ -98,11 +99,11 @@ class Player {
 
         if (this.jumpState == 1 && collide) {
             this.yvel = 0;
-            this.yvel += -(this.diam * 0.15);
+            this.yvel += -(this.diam * 0.16);
         }
 
         if (this.jumpState == 0) {
-            this.yvel += -(this.diam * 0.15);
+            this.yvel += -(this.diam * 0.16);
             this.jumpState = 1;
         }
 
