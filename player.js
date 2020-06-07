@@ -39,14 +39,14 @@ class Player {
 
     move(){
     
-        if (keyIsDown(RIGHT_ARROW)) {   //acceleration left/right
+        if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) {   //acceleration left/right
             this.xvel += 2;
         }
-        if (keyIsDown(LEFT_ARROW)) {
+        if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) {
             this.xvel += -2;
         }
 
-        if (keyIsDown(UP_ARROW)) {
+        if (keyIsDown(UP_ARROW) || keyIsDown(87)) {
             this.Jump();
         }
 
