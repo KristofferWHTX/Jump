@@ -40,10 +40,10 @@ class Player {
     move(){
     
         if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) {   //acceleration left/right
-            this.xvel += 2;
+            this.xvel += 2 * fastMultiplier*2;
         }
         if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) {
-            this.xvel += -2;
+            this.xvel += -2 * fastMultiplier*2;
         }
 
         if (keyIsDown(UP_ARROW) || keyIsDown(87)) {
@@ -100,10 +100,16 @@ class Player {
         if (this.jumpState == 1 && collide) {
             this.yvel = 0;
             this.yvel += -(this.diam * 0.16);
+            if (fastMode){
+                this.yvel = this.yvel *  (fastMultiplier*0.6)
+            }
         }
 
         if (this.jumpState == 0) {
             this.yvel += -(this.diam * 0.16);
+            if (fastMode){
+                this.yvel = this.yvel *  (fastMultiplier*0.6)
+            }
             this.jumpState = 1;
         }
 

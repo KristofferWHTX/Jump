@@ -13,7 +13,7 @@ class Enemy {
             this.color = ("rgba(200, 101, 20, 0.8)");
             this.diam = round((height / 8) * 1.1); //player diam * 1.1
             this.ypos = height * 0.75 - this.diam / 2 +3;
-            this.xvel = random(width / 330, width / 270); //random difference in movement speed
+            this.xvel = random(width / 330, width / 270) * fastMultiplier; //random difference in movement speed
             this.pointValue = 100;
         }
 
@@ -21,7 +21,7 @@ class Enemy {
             this.color = ("rgba(32, 152, 79, 0.8)");
             this.diam = round((height / 8) * 1.2);      //diameter based on screen height // player diam *1.2
             this.ypos = height * 0.75 - this.diam / 2 +3;
-            this.xvel = random(width / 250, width / 200); //speed random based on screen width
+            this.xvel = random(width / 250, width / 200) * fastMultiplier; //speed random based on screen width
             this.pointValue = 150;
         }
 
@@ -29,7 +29,7 @@ class Enemy {
             this.color = ("rgba(140,70,60,0.8)")
             this.rectSize = [height / 5, height / 15];
             this.ypos = height * 0.52;
-            this.xvel = random(width / 330, width / 250);
+            this.xvel = random(width / 330, width / 250) * fastMultiplier;
             this.pointValue = 200;
         }
 
@@ -37,7 +37,7 @@ class Enemy {
             this.color = ("rgba(240,10,10,0.8)");
             this.diam = round(height / 8 *1.1);
             this.ypos = height * 0.42 - this.diam / 2;
-            this.xvel = random (width / 330, width / 250);
+            this.xvel = random (width / 330, width / 250) * fastMultiplier;
             this.pointValue = 250;
         }
 
@@ -125,6 +125,16 @@ class StartScreen {
             if (mouseIsPressed) {
                 if (mouseX >= width / 2 - 50 && mouseX <= width / 2 + 50 && mouseY >= height / 2 - 25 && mouseY <= height / 2 + 25) {
                     gameStart = true;
+                    fastMultiplier = 1;
+                    fastMode = false;
+                    spawnRate = 30;
+                    noCursor();
+                }
+                else if (mouseX >= width / 2 - 50 && mouseX <= width / 2 + 50 && mouseY >= height / 2 - 25 +100 && mouseY <= height / 2 + 25 + 100) {
+                    gameStart = true;
+                    fastMultiplier = 2;
+                    fastMode = true;
+                    spawnRate = 20;
                     noCursor();
                 }
             }
@@ -152,6 +162,14 @@ class StartScreen {
             textStyle(NORMAL);
             fill(150);
             text("Use arrow keys, jump on enemies", width / 2, height / 2 + 200);
+
+            rectMode(CENTER);                       //create fast mode button
+            rect(width / 2, height / 2 + 100, 100, 50, 10)
+            fill(40);
+            textStyle(BOLD);
+            textAlign(CENTER, CENTER);
+            textSize(20);
+            text("Fast Mode!", width / 2, height / 2 +100);
         }
     }
        
@@ -164,7 +182,7 @@ class EndScreen {
     }
 
     contn() {               //continue from endscreen
-        if (keyIsPressed) {
+        if (keyIsPressed || mouseIsPressed) {
             gameEnd = false;
             gameStart = false;
             player.playerPoints = 0; //reset player points when game ends

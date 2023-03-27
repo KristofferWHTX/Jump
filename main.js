@@ -1,6 +1,6 @@
 /// <reference path="./p5.global-mode.d.ts" />
 //global vars
-const spawnRate = 30;
+var spawnRate = 30;
 //layer variables
 var backLayer;
 var objLayer;
@@ -15,6 +15,10 @@ var player;
 //gamestate variables
 var gameStart = false;
 var gameEnd = false;
+
+var fastMode = false;
+
+var fastMultiplier = 3;
 
 //timer variable
 var timerVal = 0;
